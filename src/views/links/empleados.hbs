@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <center> <a href="/empleados/create" class="btn btn-primary">Crea empleados</a>
+    </center>
+    <center> 
+    <br>        
+   <input class="form-control col-md-3 light-table-filter" data-table="order-table" type="text" placeholder="Search by mail.."></center>
+    <br>
+    <table class="table order-table" id="sortTable">
+        <thead>
+            <tr style="border:none;">
+                <th scope="col" style="border:none;">Id</th>
+                <th scope="col" style="border:none;" onclick="sortTable();">Name</th>
+                <th scope="col" style="border:none;">Surname</th>
+                <th scope="col" style="border:none;">Address</th>
+                <th scope="col" style="border:none;">Phone</th>
+                <th scope="col" style="border:none;">mail</th>
+                <th scope="col" style="border:none;">date</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            {{#each data}}
+            <tr style="border:none;color:rgb(5, 49, 182);font-weight:bold;">
+                <th scope="row" style="border:none;">{{id}}</th>
+                <td style="border:none;">{{name}}</td>
+                <td style="border:none;">{{surname}}</td>
+                <td style="border:none;">{{street}}</td>
+                <td style="border:none;">{{tlf}}</td>
+                <td style="border:none;">{{mail}}</td>
+                <td style="border:none;">{{date}}</td>
+
+            </tr>
+            {{/each}}
+
+        </tbody>
+    </table>
+
+
+    <script>
+        function sortTable() {
+            var tables, sort, i, x, y, tableSort;
+            tables = document.getElementById("sortTable");
+            sort = true;
+            while (sort) {
+                sort = false;
+                tblrow = tables.rows;
+                for (i = 1; i < (tblrow.length - 1); i++) {
+                    tableSort = false;
+                    x = tblrow[i].getElementsByTagName("td")[0];
+                    y = tblrow[i + 1].getElementsByTagName("td")[0];
+
+                    if (x.innerHTML.toUpperCase() > y.innerHTML.toUpperCase()) {
+                        tableSort = true;
+                        break;
+                    }
+                }
+                if (tableSort) {
+                    tblrow[i].parentNode.insertBefore(tblrow[i + 1], tblrow[i]);
+                    sort = true;
+                }
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
+
+<script type="text/javascript">
+
+    /**Esta funcion filtra cada uno de los elementos disponibles en la tabla y los muestra de forma única.**/
+    (function (document) {
+        'use strict';
+
+        var LightTableFilter = (function (Arr) {
+
+            var _input;
+
+            function _onInputEvent(e) {
+                _input = e.target;
+                var tables = document.getElementsByClassName(_input.getAttribute('data-table'));
+                Arr.forEach.call(tables, function (table) {
+                    Arr.forEach.call(table.tBodies, function (tbody) {
+                        Arr.forEach.call(tbody.rows, _filter);
+                    });
+                });
+            }
+
+            function _filter(row) {
+                var text = row.textContent.toLowerCase(), val = _input.value.toLowerCase();
+                row.style.display = text.indexOf(val) === -1 ? 'none' : 'table-row';
+            }
+
+            return {
+                init: function () {
+                    var inputs = document.getElementsByClassName('light-table-filter');
+                    Arr.forEach.call(inputs, function (input) {
+                        input.oninput = _onInputEvent;
+                    });
+                }
+            };
+        })(Array.prototype);
+
+        document.addEventListener('readystatechange', function () {
+            if (document.readyState === 'complete') {
+                LightTableFilter.init();
+            }
+        });
+
+    })(document);
+
+</script>
